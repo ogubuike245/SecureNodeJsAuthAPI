@@ -1,0 +1,40 @@
+{
+    "name": "meen-stack-boilerplate-with-vanilla-javascript",
+    "version": "1.0.0",
+    "description": "boilerplate code",
+    "main": "src/app.js",
+    "scripts": {
+        "dev": "nodemon -r dotenv/config src/app.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ogubuike245/MEEN-stack-boilerplate-with-vanilla-javascript.git"
+    },
+    "keywords": [
+        "boilerplate"
+    ],
+    "author": "ogubuike emejuru",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/ogubuike245/MEEN-stack-boilerplate-with-vanilla-javascript/issues"
+    },
+    "homepage": "https://github.com/ogubuike245/MEEN-stack-boilerplate-with-vanilla-javascript#readme",
+    "dependencies": {
+        "bcrypt": "^5.1.0",
+        "compression": "^1.7.4",
+        "cookie-parser": "^1.4.6",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "ejs": "^3.1.9",
+        "express": "^4.18.2",
+        "helmet": "^6.0.1",
+        "jsonwebtoken": "^9.0.0",
+        "mongoose": "^7.0.1",
+        "morgan": "^1.10.0",
+        "nodemailer": "^6.9.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.21"
+    }
+}
