@@ -12,6 +12,7 @@ const allowedMethods = require('./middleware/methods.middleware');
 
 // Require function to connect to MongoDB
 const connectToDatabase = require('./config/config');
+const { checkForLoggedInUser } = require('./middleware/auth.middleware');
 
 // Create a new instance of the Express application
 const app = express();
@@ -35,6 +36,8 @@ app.use(morgan('dev'));
 
 // Allow only specific HTTP methods for certain routes
 app.use(allowedMethods);
+
+app.use(checkForLoggedInUser);
 
 // Define the application routes
 app.get('/', (_, response) => {

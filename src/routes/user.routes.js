@@ -10,19 +10,20 @@ const {
     loginPage,
     registerPage
 } = require('../controllers/user.controller');
+const { isLoggedIn } = require('../middleware/auth.middleware');
 
 const userRouter = express.Router();
 
 // GET ROUTES
-userRouter.get('/register', registerPage);
-userRouter.get('/verify/:email', verifyEmailPage);
-userRouter.get('/login', loginPage);
+userRouter.get('/register', isLoggedIn, registerPage);
+userRouter.get('/verify/:email', isLoggedIn, verifyEmailPage);
+userRouter.get('/login', isLoggedIn, loginPage);
 userRouter.get('/profile/:id', userProfilepage);
 userRouter.get('/logout', userLogout);
 
 // POST ROUTES
-userRouter.post('/register', register);
-userRouter.post('/verify/email', verifyEmail);
-userRouter.post('/login', login);
+userRouter.post('/register', isLoggedIn, register);
+userRouter.post('/verify/email', isLoggedIn, verifyEmail);
+userRouter.post('/login', isLoggedIn, login);
 
 module.exports = userRouter;
