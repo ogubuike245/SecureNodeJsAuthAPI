@@ -1,11 +1,11 @@
 {
-    "name": "meen-stack-boilerplate-with-vanilla-javascript",
+    "name": "SECURE-NODEJS-AUTH-API",
     "version": "1.0.0",
     "description": "boilerplate code",
     "main": "src/app.js",
+    "type": "module",
     "scripts": {
-        "dev": "nodemon -r dotenv/config src/app.js",
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "dev": "nodemon -r dotenv/config src/app.js --experimental-modules"
     },
     "repository": {
         "type": "git",

@@ -1,5 +1,5 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/user.model');
+import jwt from 'jsonwebtoken';
+import User from '../models/auth.model.js';
 
 // CHECK IF THERE IS A LOGGED IN USER FROM THE JWT TOKEN
 
@@ -23,7 +23,7 @@ const checkForLoggedInUser = async (request, res, next) => {
             res.clearCookie('gubi');
             res.status(401).json({
                 error: true,
-                message: ' Session has expired., Please log in again.'
+                message: 'Session has expired. Please log in again.'
             });
         } else {
             // Other errors, log and return error response
@@ -43,7 +43,7 @@ const isLoggedIn = (request, response, next) => {
     }
 };
 
-// CHECK TO SEE IF THE  JSON WEB TOKEN EXISTS AND ALSO IF THE TOKEN HAS BEEN VERIFIED
+// CHECK TO SEE IF THE JSON WEB TOKEN EXISTS AND ALSO IF THE TOKEN HAS BEEN VERIFIED
 const tokenVerification = async (request, res, next) => {
     try {
         const token = request.cookies.gubi;
@@ -66,8 +66,4 @@ const tokenVerification = async (request, res, next) => {
     }
 };
 
-module.exports = {
-    tokenVerification,
-    isLoggedIn,
-    checkForLoggedInUser
-};
+export { tokenVerification, isLoggedIn, checkForLoggedInUser };

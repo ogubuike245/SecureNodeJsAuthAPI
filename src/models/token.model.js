@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+// Importing the Mongoose package
+import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const TokenSchema = new Schema({
@@ -18,4 +19,4 @@ const TokenSchema = new Schema({
     expires: { type: Date, default: Date.now, expires: 3600 }
 });
 
-module.exports = mongoose.model('Token', TokenSchema);
+export default mongoose.model('Token', TokenSchema);

@@ -1,5 +1,5 @@
 // Importing the Mongoose package
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 // Extracting the API_PORT and MONG0_DB_URI environment variables
 const { API_PORT, MONG0_DB_URI } = process.env;
@@ -17,7 +17,7 @@ const connectToDatabase = async (app) => {
         app.listen(API_PORT || 9000, () => {
             // Logging a message indicating that the app is running and connected to the database
             console.log(
-                ` BACKEND SERVER RUNNING ON PORT : ${API_PORT}  AND CONNECTED TO MONGODB DATABASE`
+                `BACKEND SERVER RUNNING ON PORT : ${API_PORT} AND CONNECTED TO MONGODB DATABASE`
             );
         });
     } catch (error) {
@@ -27,4 +27,4 @@ const connectToDatabase = async (app) => {
 };
 
 // Exporting the connectToDatabase function so it can be used in other parts of the application
-module.exports = connectToDatabase;
+export default connectToDatabase;
