@@ -1,6 +1,1 @@
-# boilerplate-with-vanilla-javascript
-
-MONGO DB , EXPRESS , EJS , NODE JS STACK- BOLIERPLATE CODE
-
-_THIS IS MORE LIKE AN API THAT CAN BE ACCESSED ON REACT AS WELL AND NEXT JS WHICH HAS AUTH
-IMPLEMENTED WITH JSONWEBTOKEN AND COOKIE PARSER WITH MIDDLEWARE FUNCTIONS FOR PROTECTION OF ROUTES_
+GUBI SecureNodeJsAuthAPI boilerplate-with-javascript is a secure API boilerplate built using the MongoDB, Express, EJS, and Node.js (MEEN) stack. This boilerplate provides authentication implemented with JSON Web Token and cookie parser, along with middleware functions for route protection. The API is designed to be accessible from React and Next.js applications. Use this boilerplate to quickly set up a secure Node.js API with authentication capabilities.
