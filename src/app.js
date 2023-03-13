@@ -1,3 +1,4 @@
+// Require necessary packages
 const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
@@ -6,40 +7,41 @@ const compression = require('compression');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
+// Require middleware functions
 const allowedMethods = require('./middleware/methods.middleware');
-const connectToDatabase = require('./config/config');
-// Include the routes
 
-// Connect to MongoDB
+// Require function to connect to MongoDB
+const connectToDatabase = require('./config/config');
+
+// Create a new instance of the Express application
 const app = express();
+
+// Call the function to connect to MongoDB
 connectToDatabase(app);
 
-// connectToDatabase(app);
-// Use EJS as the view engine
+// Set EJS as the view engine and specify the views directory
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
-// MIDDLEWARES AND STATIC
+// Define middleware functions and serve static files
 app.use(express.static('./public'));
-// Parse incoming request bodies as JSON
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// Parse cookies
 app.use(cookieParser());
 app.use(cors());
 app.use(helmet());
 app.use(compression());
 app.use(morgan('dev'));
-// Allowed request methods
+
+// Allow only specific HTTP methods for certain routes
 app.use(allowedMethods);
 
-//APP ROUTES
-
+// Define the application routes
 app.get('/', (_, response) => {
     response.send('<h1>HELLO</h1>');
 });
 
-// Error handling middleware
+// Define an error handling middleware function
 const errorHandler = (err, req, res, next) => {
     // Log the error to the console
     console.error(err.stack);
