@@ -14,9 +14,9 @@ export const registerPageController = async (req, res) => {
 
 export const verifyEmailPageController = async (req, res) => {
     try {
-        const { email } = req.params;
+        const { id, token } = req.params;
 
-        const result = await getVerifyEmailPage(email);
+        const result = await getVerifyEmailPage(id, token);
 
         const { status, error, message } = result;
 
@@ -261,9 +261,9 @@ export const registerUserController = async (req, res) => {
  */
 
 export const verifyEmailController = async (req, res) => {
-    const { email, otp } = req.body;
+    const { id, otp } = req.body;
     try {
-        const result = await verifyEmail(email, otp);
+        const result = await verifyEmail(id, otp);
 
         const { status, error, message } = result;
 

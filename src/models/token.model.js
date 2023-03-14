@@ -8,8 +8,7 @@ const TokenSchema = new Schema({
         required: true
     },
     generatedOTP: {
-        type: String,
-        required: true
+        type: String
     },
     user: {
         type: Schema.Types.ObjectId,

@@ -17,7 +17,7 @@ const userRouter = express.Router();
 
 // GET ROUTES
 userRouter.get('/register', isLoggedIn, registerPageController);
-userRouter.get('/verify/:email', isLoggedIn, verifyEmailPageController);
+userRouter.get('/verify/:id/user/:token', isLoggedIn, verifyEmailPageController);
 userRouter.get('/login', isLoggedIn, loginPageController);
 userRouter.get('/profile/:id', userProfilepageController);
 userRouter.get('/logout', userLogout);
