@@ -15,12 +15,15 @@ import connectToDatabase from './config/config.js';
 
 //Import app routes
 import userRoutes from './routes/auth.routes.js';
+import { swaggerDoc } from '../swagger.config.js';
 
 // Create a new instance of the Express application
 const app = express();
 
 // Call the function to connect to MongoDB
 connectToDatabase(app);
+
+// Add your other middleware and routes here
 
 // Set EJS as the view engine and specify the views directory
 app.set('view engine', 'ejs');
@@ -46,6 +49,9 @@ app.use(checkForLoggedInUser);
 app.get('/', (_, response) => {
     response.send('<h1>HELLO</h1>');
 });
+
+swaggerDoc(app);
+
 app.use('/api/v1/auth', userRoutes);
 
 // Define an error handling middleware function
