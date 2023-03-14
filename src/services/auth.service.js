@@ -3,7 +3,6 @@ import User from '../models/auth.model.js';
 import Token from '../models/token.model.js';
 import { sendVerificationEmail } from '../utils/sendmail.js';
 import {
-    getNewOTP,
     generateOneTimePasswordAndSave,
     createToken,
     generateOneTimePassword
@@ -67,19 +66,10 @@ export const registerUser = async function (userData) {
     }
 };
 
-export const getVerifyEmailPage = async function (email) {
+export const getVerifyEmailPage = async function (id, token) {
     try {
-        // VERIFY IF THE EMAIL EXISTS
-        if (!email) {
-            return {
-                error: true,
-                message: 'Email is required.',
-                status: 400
-            };
-        }
-
         // CHECK IF THE USER EXISTS
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findById({ id });
         if (!existingUser) {
             return {
                 error: true,
@@ -99,7 +89,8 @@ export const getVerifyEmailPage = async function (email) {
 
         // FIND THE TOKEN FOR THE USER
         const existingToken = await Token.findOne({
-            user: existingUser?._id
+            user: existingUser?._id,
+            value: token
         });
 
         if (!existingToken) {
@@ -125,27 +116,27 @@ export const getVerifyEmailPage = async function (email) {
     }
 };
 
-export const verifyEmail = async function (email, otp) {
+export const verifyEmail = async function (id, otp) {
     try {
-        if (!email || !otp) {
+        if (!otp) {
             return {
                 error: true,
-                message: 'Please provide both email and OTP.',
+                message: 'Please input OTP.',
                 status: 400
             };
         }
 
-        const existingUser = await User.findOne({ email });
+        const existingUser = await User.findById({ id });
 
         if (!existingUser) {
             return {
                 error: true,
-                message: 'User with that email does not exist.',
+                message: 'User does not exist.',
                 status: 400
             };
         }
 
-        const existingToken = await Token.findOne({ user: existingUser._id });
+        const existingToken = await Token.findOne({ user: existingUser._id, generatedOTP: otp });
 
         if (!existingToken) {
             return {
@@ -167,7 +158,7 @@ export const verifyEmail = async function (email, otp) {
 
         await User.updateOne({ _id: existingUser._id }, { $set: { isVerified: true } });
 
-        await Token.deleteOne({ _id: existingToken._id });
+        await Token.deleteOne({ user: existingUser._id, generatedOTP: otp });
 
         return {
             success: true,
