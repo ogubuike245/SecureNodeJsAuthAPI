@@ -19,7 +19,8 @@ export const registerUser = async function (userData) {
             return {
                 error: true,
                 message:
-                    'A user with that email address already exists. Please try again with a different email address or log in to your existing account.'
+                    'A user with that email address already exists. Please try again with a different email address or log in to your existing account.',
+                status: 400
             };
         }
 
@@ -53,13 +54,15 @@ export const registerUser = async function (userData) {
         return {
             success: true,
             message:
-                'Registration successful! A verification email has been sent to your email address. Please follow the instructions in the email to complete the verification process and log in to your account.'
+                'Registration successful! A verification email has been sent to your email address. Please follow the instructions in the email to complete the verification process and log in to your account.',
+            status: 201
         };
     } catch (error) {
         console.log(error);
         return {
-            success: true,
-            message: error.message
+            error: true,
+            message: error.message,
+            status: 500
         };
     }
 };
@@ -70,7 +73,8 @@ export const getVerifyEmailPage = async function (email) {
         if (!email) {
             return {
                 error: true,
-                message: 'Email is required.'
+                message: 'Email is required.',
+                status: 400
             };
         }
 
@@ -79,7 +83,8 @@ export const getVerifyEmailPage = async function (email) {
         if (!existingUser) {
             return {
                 error: true,
-                message: 'User not found.'
+                message: 'User not found.',
+                status: 404
             };
         }
 
@@ -87,7 +92,8 @@ export const getVerifyEmailPage = async function (email) {
         if (existingUser.isVerified) {
             return {
                 error: true,
-                message: 'Email has already been verified.'
+                message: 'Email has already been verified.',
+                status: 400
             };
         }
 
@@ -99,19 +105,22 @@ export const getVerifyEmailPage = async function (email) {
         if (!existingToken) {
             return {
                 error: true,
-                message: 'Token not found.'
+                message: 'Token not found.',
+                status: 404
             };
         }
 
         // Return the result object
         return {
             success: true,
-            email
+            email,
+            status: 200
         };
     } catch (error) {
         return {
             error: true,
-            message: 'Internal server error.'
+            message: 'Internal server error.',
+            status: 500
         };
     }
 };
@@ -183,6 +192,7 @@ export const loginUser = async (email, password) => {
         if (!user) {
             return {
                 error: true,
+                status: 404,
                 message:
                     'The email address provided does not match any existing accounts. Please double-check the email address or create a new account.'
             };
@@ -192,6 +202,7 @@ export const loginUser = async (email, password) => {
         if (!isMatch) {
             return {
                 error: true,
+                status: 401,
                 message:
                     'Incorrect email or password. Please make sure you have entered the correct email and password combination.'
             };
@@ -203,6 +214,7 @@ export const loginUser = async (email, password) => {
             if (existingToken) {
                 return {
                     error: true,
+                    status: 403,
                     message:
                         'Your account has not been fully verified yet. Please check your email for a verification code and enter it below to complete the verification process and access your account.'
                 };
@@ -211,6 +223,7 @@ export const loginUser = async (email, password) => {
                 await sendVerificationEmail(user, newToken.generatedOTP);
                 return {
                     success: true,
+                    status: 403,
                     message:
                         'Your verification code has expired. Verification codes are valid for 24 hours,  A New verification code has been sent to your email.'
                 };
@@ -220,6 +233,7 @@ export const loginUser = async (email, password) => {
         const token = createToken(user._id);
         return {
             success: true,
+            status: 200,
             message: 'login Successful',
             redirect: '/',
             token
@@ -234,11 +248,23 @@ export const getUserProfile = async function (id) {
         const user = await User.findById(id);
 
         if (!user) {
-            throw new Error('User not found');
+            return {
+                error: true,
+                status: 404,
+                message: 'User not found'
+            };
         }
 
-        return user;
+        return {
+            success: true,
+            status: 200,
+            data: user
+        };
     } catch (error) {
-        throw new Error('Internal server error');
+        return {
+            error: true,
+            status: 500,
+            message: 'Internal server error'
+        };
     }
 };
