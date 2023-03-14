@@ -1,18 +1,20 @@
-// Require necessary packages
-const express = require('express');
-const path = require('path');
-const morgan = require('morgan');
-const helmet = require('helmet');
-const compression = require('compression');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
+// Import necessary packages
+import express from 'express';
+import morgan from 'morgan';
+import helmet from 'helmet';
+import compression from 'compression';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
 
-// Require middleware functions
-const allowedMethods = require('./middleware/methods.middleware');
+// Import middleware functions
+import { allowedMethods } from './middleware/methods.middleware.js';
+import { checkForLoggedInUser } from './middleware/auth.middleware.js';
 
-// Require function to connect to MongoDB
-const connectToDatabase = require('./config/config');
-const { checkForLoggedInUser } = require('./middleware/auth.middleware');
+// Import function to connect to MongoDB
+import connectToDatabase from './config/config.js';
+
+//Import app routes
+import userRoutes from './routes/auth.routes.js';
 
 // Create a new instance of the Express application
 const app = express();
@@ -22,7 +24,7 @@ connectToDatabase(app);
 
 // Set EJS as the view engine and specify the views directory
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views');
 
 // Define middleware functions and serve static files
 app.use(express.static('./public'));
@@ -37,12 +39,14 @@ app.use(morgan('dev'));
 // Allow only specific HTTP methods for certain routes
 app.use(allowedMethods);
 
+// Apply middleware for routes
 app.use(checkForLoggedInUser);
 
 // Define the application routes
 app.get('/', (_, response) => {
     response.send('<h1>HELLO</h1>');
 });
+app.use('/api/v1/auth', userRoutes);
 
 // Define an error handling middleware function
 const errorHandler = (err, req, res, next) => {

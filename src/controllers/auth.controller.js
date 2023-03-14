@@ -1,25 +1,35 @@
-const {
+import {
     registerUser,
     getVerifyEmailPage,
     loginUser,
     getUserProfile
-} = require('../services/auth.service');
+} from '../services/auth.service.js';
 
 // PAGES
 
-exports.registerPageController = async (req, res) => {
-    res.render('auth/register', { title: 'User Registration' });
+export const registerPageController = async (req, res) => {
+    // res.render('auth/register', { title: 'User Registration' });
+    res.send('REGISTER PAGE');
 };
 
-exports.verifyEmailPageController = async (req, res) => {
+export const verifyEmailPageController = async (req, res) => {
     try {
         const { email } = req.params;
 
         const result = await getVerifyEmailPage(email);
 
+        if (result.error) {
+            return res.status(400).json({
+                error: true,
+                message: result.message
+            });
+        }
+
         // If the request accepts HTML, render the EJS view
         if (req.accepts('html')) {
-            res.render('auth/verifyEmail', { title: 'VERIFY ACCOUNT', email });
+            // res.render('auth/verifyEmail', { title: 'VERIFY ACCOUNT', email });
+
+            res.send('VERIFY PAGE');
         }
 
         // If the request accepts JSON, send the data as JSON
@@ -34,14 +44,15 @@ exports.verifyEmailPageController = async (req, res) => {
     }
 };
 
-exports.loginPageController = async (req, res) => {
-    res.render('auth/login', { title: 'User Login' });
+export const loginPageController = async (req, res) => {
+    // res.render('auth/login', { title: 'User Login' });
+    res.send('LOGIN PAGE');
 };
 
 // userProfile
 // Renders the user's profile page with their name, email and the courses they have registered for.
 
-exports.userProfilepageController = async (req, res) => {
+export const userProfilepageController = async (req, res) => {
     try {
         const { id } = req.params;
         const user = await getUserProfile(id);
@@ -137,7 +148,7 @@ exports.userProfilepageController = async (req, res) => {
  *                   example: An error occurred while registering the user.
  */
 
-exports.registerUserController = async (req, res) => {
+export const registerUserController = async (req, res) => {
     try {
         const { email, password, firstName, lastName } = req.body;
 
@@ -229,7 +240,7 @@ exports.registerUserController = async (req, res) => {
  *                   description: Error message.
  */
 
-exports.verifyEmailController = async (req, res) => {
+export const verifyEmailController = async (req, res) => {
     const { email, otp } = req.body;
     try {
         const result = await verifyEmail(email, otp);
@@ -326,13 +337,13 @@ exports.verifyEmailController = async (req, res) => {
 
 */
 
-exports.loginUserController = async (req, res) => {
+export const loginUserController = async (req, res) => {
     try {
         const { email, password } = req.body;
         const result = await loginUser(email, password);
 
         if (result.error) {
-            return res.status(200).json({
+            return res.status(400).json({
                 error: true,
                 message: result.message
             });
@@ -371,7 +382,7 @@ exports.loginUserController = async (req, res) => {
  *       302:
  *         description: Successfully logged out and redirected to the home page.
  */
-exports.userLogout = async (req, res) => {
+export const userLogout = async (req, res) => {
     res.clearCookie(process.env.JWT_NAME);
     res.redirect('/');
 };

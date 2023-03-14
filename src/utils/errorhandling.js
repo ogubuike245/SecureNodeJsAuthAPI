@@ -1,4 +1,4 @@
-const handleErrors = (error, res) => {
+export const handleErrors = (error, res) => {
     // Check if the error is a validation error
     if (error.name === 'ValidationError') {
         // If it is, extract the error messages from each validation error and send them back to the client
@@ -20,8 +20,4 @@ const handleErrors = (error, res) => {
     // If the error is not a validation error or a duplicate key error, log the error and send a server error message back to the client
     console.error(error); // Log the error to the console
     return 'Internal server error'; // Return a generic error message
-};
-
-module.exports = {
-    handleErrors
 };

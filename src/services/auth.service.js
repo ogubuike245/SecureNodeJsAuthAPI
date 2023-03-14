@@ -1,15 +1,15 @@
-const bcrypt = require('bcrypt');
-const User = require('../models/auth.model');
-const Token = require('../models/token.model');
-const { sendVerificationEmail } = require('../utils/sendmail');
-const {
+import bcrypt from 'bcrypt';
+import User from '../models/auth.model.js';
+import Token from '../models/token.model.js';
+import { sendVerificationEmail } from '../utils/sendmail.js';
+import {
     getNewOTP,
     generateOneTimePasswordAndSave,
     createToken,
     generateOneTimePassword
-} = require('../utils/helpers');
+} from '../utils/helpers.js';
 
-exports.registerUser = async function (userData) {
+export const registerUser = async function (userData) {
     try {
         const { email, password, firstName, lastName } = userData;
 
@@ -64,7 +64,7 @@ exports.registerUser = async function (userData) {
     }
 };
 
-exports.getVerifyEmailPage = async function (email) {
+export const getVerifyEmailPage = async function (email) {
     try {
         // VERIFY IF THE EMAIL EXISTS
         if (!email) {
@@ -116,7 +116,7 @@ exports.getVerifyEmailPage = async function (email) {
     }
 };
 
-exports.verifyEmail = async function (email, otp) {
+export const verifyEmail = async function (email, otp) {
     try {
         if (!email || !otp) {
             return {
@@ -176,7 +176,7 @@ exports.verifyEmail = async function (email, otp) {
     }
 };
 
-exporst.loginUser = async (email, password) => {
+export const loginUser = async (email, password) => {
     try {
         const user = await User.findOne({ email });
 
@@ -229,7 +229,7 @@ exporst.loginUser = async (email, password) => {
     }
 };
 
-exports.getUserProfile = async function (id) {
+export const getUserProfile = async function (id) {
     try {
         const user = await User.findById(id);
 
