@@ -18,10 +18,12 @@ export const verifyEmailPageController = async (req, res) => {
 
         const result = await getVerifyEmailPage(email);
 
-        if (result.error) {
-            return res.status(400).json({
-                error: true,
-                message: result.message
+        const { status, error, message } = result;
+
+        if (error) {
+            return res.status(status).json({
+                error,
+                message
             });
         }
 
@@ -55,14 +57,23 @@ export const loginPageController = async (req, res) => {
 export const userProfilepageController = async (req, res) => {
     try {
         const { id } = req.params;
-        const user = await getUserProfile(id);
+        const result = await getUserProfile(id);
+
+        const { status, error, message } = result;
+
+        if (error) {
+            return res.status(status).json({
+                error,
+                message
+            });
+        }
 
         // If the request accepts HTML, render the EJS view
         if (req.accepts('html')) {
             return res.render('user/profile', {
                 title: 'User Profile',
                 success: true,
-                user
+                user: result
             });
         }
 
@@ -70,7 +81,7 @@ export const userProfilepageController = async (req, res) => {
         if (req.accepts('json')) {
             return res.status(200).json({
                 success: true,
-                user
+                user: result
             });
         }
     } catch (error) {
@@ -152,10 +163,19 @@ export const registerUserController = async (req, res) => {
     try {
         const { email, password, firstName, lastName } = req.body;
 
-        const user = await registerUser({ email, password, firstName, lastName });
+        const result = await registerUser({ email, password, firstName, lastName });
+
+        const { status, error, message } = result;
+
+        if (error) {
+            return res.status(status).json({
+                error,
+                message
+            });
+        }
 
         return res.status(200).json({
-            user
+            result
         });
     } catch (error) {
         return res.status(500).json({
@@ -244,6 +264,16 @@ export const verifyEmailController = async (req, res) => {
     const { email, otp } = req.body;
     try {
         const result = await verifyEmail(email, otp);
+
+        const { status, error, message } = result;
+
+        if (error) {
+            return res.status(status).json({
+                error,
+                message
+            });
+        }
+
         return res.status(200).json(result);
     } catch (error) {
         console.log(error);
@@ -342,10 +372,12 @@ export const loginUserController = async (req, res) => {
         const { email, password } = req.body;
         const result = await loginUser(email, password);
 
-        if (result.error) {
-            return res.status(400).json({
-                error: true,
-                message: result.message
+        const { status, error, message } = result;
+
+        if (error) {
+            return res.status(status).json({
+                error,
+                message
             });
         }
 
